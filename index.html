@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>订阅 Claude Ultra：从登录开始</title>
+  <style>
+    :root {
+      --paper: #f4efe6;
+      --card: #fffaf3;
+      --ink: #1d1915;
+      --muted: #5f574e;
+      --line: #e0d3c3;
+      --clay: #c24d28;
+      --shadow: 0 16px 40px rgba(70, 42, 18, 0.08);
+      --sans: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --serif: "Iowan Old Style", Palatino, "Palatino Linotype", "Songti SC", "Noto Serif SC", serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.55;
+      padding-bottom: calc(84px + env(safe-area-inset-bottom));
+    }
+    .wrap { width: min(440px, calc(100% - 28px)); margin: 0 auto; }
+    header { padding: 20px 0 4px; }
+    .langs { display: flex; gap: 8px; margin: 0 0 12px; }
+    .langs button {
+      font: inherit; font-size: 14px; cursor: pointer;
+      border: 1px solid var(--line); background: var(--card); color: var(--muted);
+      border-radius: 999px; padding: 8px 14px; min-height: 40px;
+    }
+    .langs button.on { background: var(--ink); color: #f6efe4; border-color: var(--ink); }
+    .kicker { margin: 0 0 6px; color: var(--clay); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; }
+    h1 { font-family: var(--serif); font-size: 34px; line-height: 1.1; margin: 0 0 8px; font-weight: 600; }
+    .lede { margin: 0; color: var(--muted); font-size: 16px; }
+    .intro { display: grid; gap: 10px; margin-top: 14px; }
+    .intro article { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+    .intro h2 { font-family: var(--serif); font-size: 22px; margin: 0 0 6px; font-weight: 600; }
+    .intro p { margin: 0; }
+    .uses { display: grid; gap: 8px; }
+    .uses div { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+    .uses b { display: block; }
+
+    .layout { display: flex; flex-direction: column; gap: 14px; padding: 16px 0 8px; }
+    #copy h2 { font-family: var(--serif); font-size: 28px; margin: 4px 0 8px; font-weight: 600; }
+    #copy ol { margin: 0; padding-left: 22px; }
+    #copy li { margin: 6px 0; }
+    #copy a { color: var(--clay); font-weight: 700; }
+    a.go {
+      display: block; text-align: center; text-decoration: none;
+      background: var(--clay); color: #fff; font-weight: 700;
+      border-radius: 10px; padding: 12px; min-height: 48px; margin: 0 0 10px;
+    }
+    .count { color: var(--muted); font-size: 14px; margin: 0; scroll-margin-top: 12px; }
+
+    .rail {
+      display: flex; gap: 8px; margin: 0 -14px; padding: 8px 14px 4px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    .rail button {
+      flex: 0 0 auto; white-space: nowrap;
+      text-align: left; font: inherit; cursor: pointer;
+      border: 1px solid var(--line); background: var(--card); color: var(--muted);
+      border-radius: 999px; padding: 10px 14px; min-height: 44px;
+    }
+    .rail button.on { background: var(--ink); color: #f6efe4; border-color: var(--ink); }
+    :focus-visible { outline: 3px solid var(--clay); outline-offset: 2px; }
+
+    .mock {
+      background: #fff; border: 1px solid var(--line); border-radius: 18px;
+      overflow: hidden; box-shadow: var(--shadow);
+    }
+    .mock-bar { padding: 10px 12px; background: #f6f1e8; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    .mock-body { padding: 16px; min-height: 280px; }
+    .screen { display: none; }
+    .screen.on { display: block; }
+    .fake, .choice { border: 1px solid #e4d8c8; border-radius: 10px; }
+    .fake { display: block; width: 100%; text-align: center; padding: 10px; margin: 8px 0; background: #fff; }
+    .fake.dark { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .fake.clay { background: var(--clay); color: #fff; border-color: var(--clay); font-weight: 700; }
+    .field { padding: 10px 12px; color: #8a8176; margin: 8px 0; text-align: left; }
+    .field b { display: block; color: var(--ink); font-size: 12px; font-weight: 700; }
+    .field.on { border-color: var(--clay); background: #fff4ee; color: var(--ink); }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .row2 .field { margin: 0; }
+    .choice { padding: 10px 12px; margin-bottom: 8px; }
+    .choice b { display: block; }
+    .choice small { color: var(--muted); }
+    .choice.on { border-color: var(--clay); background: #fff4ee; }
+    .mini { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+    .side { display: grid; grid-template-columns: 96px 1fr; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; min-height: 220px; }
+    .side nav { background: #f7f2ea; padding: 10px; font-size: 13px; }
+    .side nav div { padding: 6px 8px; border-radius: 8px; }
+    .side nav .me { margin-top: 90px; background: #fff; border: 1px solid var(--line); font-weight: 700; }
+    .side .pad { padding: 12px; }
+
+    .bar {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: #1d1915; color: #f6efe4;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .bar-inner {
+      width: min(440px, calc(100% - 20px)); margin: 0 auto;
+      min-height: 68px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center;
+    }
+    .bar button { font: inherit; font-size: 17px; cursor: pointer; border-radius: 999px; border: 1px solid #6d6256; background: transparent; color: #f6efe4; min-height: 48px; }
+    .bar button.primary { background: #f4efe6; color: var(--ink); border-color: #f4efe6; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" id="lang-zh">中文</button>
+        <button type="button" id="lang-id">Indonesia</button>
+      </div>
+      <p class="kicker" id="kicker">CLAUDE ULTRA · $200 / 月</p>
+      <h1 id="hero">从登录官网开始订</h1>
+      <p class="lede" id="lede">Claude 是 Anthropic 的 AI 助手。先看它是干什么的，再打开 claude.ai 按顺序订阅。</p>
+      <div class="intro">
+        <article>
+          <h2 id="use-title">用它干什么</h2>
+          <p id="use-body">在 claude.ai 里用文字把工作交给它：写文章、翻译、整理资料、读文件、改代码、做分析。订完 Ultra 之后，还是登录同一个网站使用。</p>
+        </article>
+        <div class="uses">
+          <div><b id="use1-title">日常办公</b><span id="use1-body">写稿、翻译、总结长文、整理成表格或报告。</span></div>
+          <div><b id="use2-title">写代码</b><span id="use2-body">在网页里问，也可以用 Claude Code 在自己的电脑上改项目。</span></div>
+          <div><b id="use3-title">为什么选 Ultra</b><span id="use3-body">个人方案里用量最高的一档，每月 200 美元，适合一整天都在用。</span></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <p class="count" id="count">第 1 步 / 共 10 步</p>
+      <div id="copy"></div>
+      <aside class="mock" aria-hidden="true">
+        <div class="mock-bar" id="mock-bar">手机上会看到</div>
+        <div class="mock-body" id="stage"></div>
+      </aside>
+      <div class="rail" id="rail"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="bar-inner">
+      <button type="button" id="prev">上一步</button>
+      <button type="button" id="next" class="primary">下一步</button>
+    </div>
+  </div>
+
+  <template id="tpl-open">
+    <a class="go" href="https://claude.ai" target="_blank" rel="noopener" data-k="open-btn">打开 claude.ai</a>
+    <h3 style="font-family:var(--serif);font-size:26px;margin:8px 0" data-k="open-heading">登录 Claude</h3>
+    <div class="fake dark">Continue with Google</div>
+    <div class="fake">Continue with email</div>
+  </template>
+  <template id="tpl-login">
+    <p class="mini" data-k="login-label">邮箱登录</p>
+    <div class="fake field" data-k="login-email">输入邮箱</div>
+    <div class="fake dark">Continue with email</div>
+    <p class="mini" data-k="login-note">去邮箱打开登录链接，回到这个账号。</p>
+  </template>
+  <template id="tpl-phone">
+    <p class="mini" data-k="phone-label">验证手机号</p>
+    <div class="field on"><b>1. Country code</b><span data-k="phone-code">国家区号</span></div>
+    <div class="field on"><b>2. Phone number</b><span data-k="phone-number">能收短信的手机号</span></div>
+    <div class="fake dark" data-k="phone-send">发送验证码</div>
+    <div class="field on"><b>3. Code</b><span data-k="phone-digits">短信里的 6 位数字</span></div>
+    <div class="fake clay">Verify code</div>
+  </template>
+  <template id="tpl-settings">
+    <div class="side">
+      <nav>
+        <div>New chat</div>
+        <div class="me" data-k="settings-avatar">头像 · Settings</div>
+      </nav>
+      <div class="pad">
+        <p class="mini" data-k="settings-note">点左下角后</p>
+        <div class="choice on"><b>Settings</b><small data-k="settings-pick">选这个</small></div>
+        <div class="choice"><b>Log out</b></div>
+      </div>
+    </div>
+  </template>
+  <template id="tpl-billing">
+    <div class="side">
+      <nav>
+        <div class="me">Billing</div>
+        <div>Usage</div>
+      </nav>
+      <div class="pad">
+        <p class="mini">Settings / Billing</p>
+        <div class="fake clay">Upgrade plan</div>
+      </div>
+    </div>
+  </template>
+  <template id="tpl-plan">
+    <p class="mini" data-k="plan-label">选择方案</p>
+    <div class="choice"><b>Pro</b><small>$20 / month</small></div>
+    <div class="choice"><b>Max</b><small>$100 / month</small></div>
+    <div class="choice on"><b>Ultra</b><small data-k="plan-pick">$200 / month · 选这个</small></div>
+  </template>
+  <template id="tpl-bill">
+    <p class="mini" data-k="bill-label">账单信息</p>
+    <div class="field on"><b data-k="bill-1">1. 全名</b><span data-k="bill-1h">银行卡上的姓名</span></div>
+    <div class="field on"><b data-k="bill-2">2. 国家或地区</b><span data-k="bill-2h">账单所在国家</span></div>
+    <div class="field on"><b data-k="bill-3">3. 地址第 1 行</b><span data-k="bill-3h">街道门牌</span></div>
+    <div class="field"><b data-k="bill-4">4. 地址第 2 行</b><span data-k="bill-opt">可选</span></div>
+    <div class="field on"><b data-k="bill-5">5. 城市</b><span data-k="bill-5h">城市</span></div>
+    <div class="field on"><b data-k="bill-6">6. 省</b><span data-k="bill-6h">按国家选择</span></div>
+    <div class="field on"><b data-k="bill-7">7. 邮编</b><span data-k="bill-7h">邮编</span></div>
+    <div class="field"><b data-k="bill-8">8. 企业名称</b><span data-k="bill-opt2">可选</span></div>
+    <div class="field"><b data-k="bill-9">9. 税号类型</b><span data-k="bill-opt3">可选</span></div>
+    <div class="field"><b data-k="bill-10">10. 税号</b><span data-k="bill-opt4">可选</span></div>
+    <div class="field"><b data-k="bill-11">11. 在发票上使用其他名称</b><span data-k="bill-opt5">可选</span></div>
+  </template>
+  <template id="tpl-cardpay">
+    <p class="mini" data-k="pay-label">付款方式</p>
+    <div class="field on"><b data-k="pay-card">卡号</b><span data-k="pay-cardh">卡面上的数字</span></div>
+    <div class="row2">
+      <div class="field on"><b data-k="pay-exp">有效期</b><span data-k="pay-exph">月 / 年</span></div>
+      <div class="field on"><b data-k="pay-cvc">安全码</b>CVC</div>
+    </div>
+    <p class="mini" data-k="pay-save">保存支付详情以备将来购物使用</p>
+  </template>
+  <template id="tpl-done">
+    <p class="mini" data-k="done-label">订阅成功</p>
+    <div class="choice on"><b>Ultra</b><small>$200 / month</small></div>
+    <p class="mini" data-k="done-note">Billing 里显示 Ultra，到这里就完成了。</p>
+  </template>
+  <template id="tpl-kyc">
+    <p class="mini" data-k="kyc-label">身份核验 · 从上往下</p>
+    <div class="field on"><b>1. Country</b><span data-k="kyc-1">证件签发国家</span></div>
+    <div class="field on"><b>2. ID type</b><span data-k="kyc-2">护照、驾照或身份证</span></div>
+    <div class="field on"><b>3. Photo of ID</b><span data-k="kyc-3">拍摄实体证件</span></div>
+    <div class="field on"><b>4. Selfie</b><span data-k="kyc-4">当场自拍</span></div>
+  </template>
+
+  <script>
+    const link = "<a href=\"https://claude.ai\" target=\"_blank\" rel=\"noopener\">claude.ai</a>";
+    const screens = ["tpl-open", "tpl-login", "tpl-phone", "tpl-settings", "tpl-billing", "tpl-plan", "tpl-bill", "tpl-cardpay", "tpl-kyc", "tpl-done"];
+    const text = {
+      zh: {
+        title: "订阅 Claude Ultra：从登录开始",
+        htmlLang: "zh-Hans",
+        kicker: "CLAUDE ULTRA · $200 / 月",
+        hero: "从登录官网开始订",
+        lede: "Claude 是 Anthropic 的 AI 助手。先看它是干什么的，再打开 claude.ai 按顺序订阅。",
+        useTitle: "用它干什么",
+        useBody: "在 claude.ai 里用文字把工作交给它：写文章、翻译、整理资料、读文件、改代码、做分析。订完 Ultra 之后，还是登录同一个网站使用。",
+        use1Title: "日常办公",
+        use1Body: "写稿、翻译、总结长文、整理成表格或报告。",
+        use2Title: "写代码",
+        use2Body: "在网页里问，也可以用 Claude Code 在自己的电脑上改项目。",
+        use3Title: "为什么选 Ultra",
+        use3Body: "个人方案里用量最高的一档，每月 200 美元，适合一整天都在用。",
+        mockBar: "手机上会看到",
+        prev: "上一步",
+        next: "下一步",
+        count: (n, total) => "第 " + n + " 步 / 共 " + total + " 步",
+        ui: {
+          "open-btn": "打开 claude.ai",
+          "open-heading": "登录 Claude",
+          "login-label": "邮箱登录",
+          "login-email": "输入邮箱",
+          "login-note": "去邮箱打开登录链接，回到这个账号。",
+          "phone-label": "验证手机号",
+          "phone-code": "国家区号",
+          "phone-number": "能收短信的手机号",
+          "phone-send": "发送验证码",
+          "phone-digits": "短信里的 6 位数字",
+          "settings-avatar": "头像 · Settings",
+          "settings-note": "点左下角后",
+          "settings-pick": "选这个",
+          "plan-label": "选择方案",
+          "plan-pick": "$200 / month · 选这个",
+          "bill-label": "账单信息",
+          "bill-1": "1. 全名",
+          "bill-1h": "银行卡上的姓名",
+          "bill-2": "2. 国家或地区",
+          "bill-2h": "账单所在国家",
+          "bill-3": "3. 地址第 1 行",
+          "bill-3h": "街道门牌",
+          "bill-4": "4. 地址第 2 行",
+          "bill-5": "5. 城市",
+          "bill-5h": "城市",
+          "bill-6": "6. 省",
+          "bill-6h": "按国家选择",
+          "bill-7": "7. 邮编",
+          "bill-7h": "邮编",
+          "bill-8": "8. 企业名称",
+          "bill-9": "9. 税号类型",
+          "bill-10": "10. 税号",
+          "bill-11": "11. 在发票上使用其他名称",
+          "bill-opt": "可选",
+          "bill-opt2": "可选",
+          "bill-opt3": "可选",
+          "bill-opt4": "可选",
+          "bill-opt5": "可选",
+          "pay-label": "付款方式",
+          "pay-card": "卡号",
+          "pay-cardh": "卡面上的数字",
+          "pay-exp": "有效期",
+          "pay-exph": "月 / 年",
+          "pay-cvc": "安全码",
+          "pay-save": "保存支付详情以备将来购物使用",
+          "kyc-label": "身份核验 · 从上往下",
+          "kyc-1": "证件签发国家",
+          "kyc-2": "护照、驾照或身份证",
+          "kyc-3": "拍摄实体证件",
+          "kyc-4": "当场自拍",
+          "done-label": "订阅成功",
+          "done-note": "Billing 里显示 Ultra，到这里就完成了。"
+        },
+        steps: [
+          {
+            title: "打开 Claude 官网，开通$200 / 月订阅",
+            items: [
+              "点 " + link + " 打开官网，或在地址栏输入后回车。",
+              "确认打开的是 Claude 的登录页。"
+            ]
+          },
+          {
+            title: "登录账号",
+            items: [
+              "有 Google 账号就点 Continue with Google。",
+              "用邮箱就点 Continue with email，去收件箱打开登录链接。",
+              "还没有账号的话，用同一页注册后再继续。"
+            ]
+          },
+          {
+            title: "新账号才验证手机号",
+            items: [
+              "新账号注册后会出现这一页。已经验证过就直接下一步。",
+              "按页面顺序：先选国家区号，再填手机号。",
+              "用支持地区、能收短信的手机号，点发送验证码。虚拟号、网络电话和座机不能用。",
+              "下一栏填短信里的 6 位数字，点 Verify code。",
+              "超过 5 分钟没收到，点 Try again，填最新的那条验证码。",
+              "验证成功后这个号码不能改。同一个号码最多验证 3 个 Claude 账号。"
+            ]
+          },
+          {
+            title: "进入设置",
+            items: [
+              "登录后点头像或邮箱，选择 Settings。",
+              "电脑网页上头像在左下角。手机上先打开菜单，再点 Settings。"
+            ]
+          },
+          {
+            title: "打开账单并升级",
+            items: ["在设置里点 Billing。", "点 Upgrade plan。"]
+          },
+          {
+            title: "选择 Ultra",
+            items: [
+              "在方案里找到 Ultra。",
+              "价格是 $200 / month，也就是每月 200 美元。",
+              "点选 Ultra。旁边的 Max 是每月 100 美元，不要点错。"
+            ]
+          },
+          {
+            title: "填写账单信息",
+            items: [
+              "从上往下填。标着可选的留空。",
+              "全名填银行卡上的姓名。国家或地区选账单所在国家。",
+              "地址第 1 行填街道门牌。地址第 2 行没有就留空。",
+              "接着填城市、省、邮编。省的选项会跟着国家变。",
+              "企业名称、税号类型、税号、发票上的其他名称，个人订阅留空。"
+            ]
+          },
+          {
+            title: "填写付款方式",
+            items: [
+              "卡号填卡面上的数字。",
+              "有效期按月/年填写。安全码在卡背面，美国运通是正面 4 位。",
+              "勾选「保存支付详情以备将来购物使用」。"
+            ]
+          },
+          {
+            title: "身份核验",
+            items: [
+              "没有弹出就直接下一步。",
+              "弹出后按页面从上到下：证件国家、证件类型、拍摄证件、当场自拍。",
+              "用本人的护照、驾照或身份证原件。复印件、截图和电子证件不能用。"
+            ]
+          },
+          {
+            title: "付款后订阅成功",
+            items: [
+              "点订阅完成付款。",
+              "成功后方案显示 Ultra，每月 200 美元。",
+              "到这里就结束。"
+            ]
+          }
+        ]
+      },
+      id: {
+        title: "Berlangganan Claude Ultra: mulai dari masuk",
+        htmlLang: "id",
+        kicker: "CLAUDE ULTRA · $200 / bulan",
+        hero: "Mulai dari situs resminya",
+        lede: "Claude adalah asisten AI dari Anthropic. Lihat dulu kegunaannya, lalu buka claude.ai dan berlangganan sesuai urutan.",
+        useTitle: "Untuk apa",
+        useBody: "Di claude.ai, serahkan pekerjaan lewat tulisan: menulis, menerjemahkan, merapikan bahan, membaca berkas, memperbaiki kode, dan menganalisis. Setelah Ultra aktif, tetap masuk ke situs yang sama.",
+        use1Title: "Kerja sehari-hari",
+        use1Body: "Menulis, menerjemahkan, meringkas teks panjang, lalu menyusunnya jadi tabel atau laporan.",
+        use2Title: "Menulis kode",
+        use2Body: "Bertanya di situs, atau memakai Claude Code untuk mengubah proyek di komputer sendiri.",
+        use3Title: "Mengapa Ultra",
+        use3Body: "Paket pribadi dengan kuota tertinggi, 200 dolar AS per bulan, untuk pemakaian sepanjang hari.",
+        mockBar: "Tampilan di ponsel",
+        prev: "Sebelumnya",
+        next: "Berikutnya",
+        count: (n, total) => "Langkah " + n + " dari " + total,
+        ui: {
+          "open-btn": "Buka claude.ai",
+          "open-heading": "Masuk ke Claude",
+          "login-label": "Masuk dengan email",
+          "login-email": "Masukkan email",
+          "login-note": "Buka tautan masuk di email, lalu kembali ke akun ini.",
+          "phone-label": "Verifikasi nomor ponsel",
+          "phone-code": "Kode negara",
+          "phone-number": "Nomor yang bisa menerima SMS",
+          "phone-send": "Kirim kode",
+          "phone-digits": "6 digit dari SMS",
+          "settings-avatar": "Avatar · Settings",
+          "settings-note": "Setelah mengetuk kiri bawah",
+          "settings-pick": "Pilih ini",
+          "plan-label": "Pilih paket",
+          "plan-pick": "$200 / month · pilih ini",
+          "bill-label": "Informasi tagihan",
+          "bill-1": "1. Nama lengkap",
+          "bill-1h": "Nama di kartu",
+          "bill-2": "2. Negara atau wilayah",
+          "bill-2h": "Negara penagihan",
+          "bill-3": "3. Baris alamat 1",
+          "bill-3h": "Jalan dan nomor",
+          "bill-4": "4. Baris alamat 2",
+          "bill-5": "5. Kota",
+          "bill-5h": "Kota",
+          "bill-6": "6. Provinsi",
+          "bill-6h": "Mengikuti negara",
+          "bill-7": "7. Kode pos",
+          "bill-7h": "Kode pos",
+          "bill-8": "8. Nama perusahaan",
+          "bill-9": "9. Jenis nomor pajak",
+          "bill-10": "10. Nomor pajak",
+          "bill-11": "11. Nama lain di faktur",
+          "bill-opt": "Opsional",
+          "bill-opt2": "Opsional",
+          "bill-opt3": "Opsional",
+          "bill-opt4": "Opsional",
+          "bill-opt5": "Opsional",
+          "pay-label": "Metode pembayaran",
+          "pay-card": "Nomor kartu",
+          "pay-cardh": "Angka di muka kartu",
+          "pay-exp": "Masa berlaku",
+          "pay-exph": "bulan / tahun",
+          "pay-cvc": "Kode keamanan",
+          "pay-save": "Simpan detail pembayaran untuk pembelian berikutnya",
+          "kyc-label": "Verifikasi identitas · dari atas",
+          "kyc-1": "Negara penerbit dokumen",
+          "kyc-2": "Paspor, SIM, atau KTP",
+          "kyc-3": "Foto dokumen asli",
+          "kyc-4": "Swafoto saat itu",
+          "done-label": "Langganan berhasil",
+          "done-note": "Billing menampilkan Ultra. Selesai sampai di sini."
+        },
+        steps: [
+          {
+            title: "Buka situs Claude, aktifkan langganan $200 / bulan",
+            items: [
+              "Ketuk " + link + " untuk membuka situs, atau ketik di bilah alamat lalu tekan enter.",
+              "Pastikan yang terbuka adalah halaman masuk Claude."
+            ]
+          },
+          {
+            title: "Masuk ke akun",
+            items: [
+              "Punya akun Google, ketuk Continue with Google.",
+              "Pakai email, ketuk Continue with email, lalu buka tautan masuk di kotak masuk.",
+              "Belum punya akun, daftar di halaman yang sama, lalu lanjutkan."
+            ]
+          },
+          {
+            title: "Nomor ponsel hanya untuk akun baru",
+            items: [
+              "Halaman ini muncul setelah akun baru dibuat. Akun yang sudah terverifikasi langsung lanjut.",
+              "Ikuti urutan halaman: pilih kode negara, lalu isi nomor ponsel.",
+              "Gunakan nomor yang bisa menerima SMS di wilayah yang didukung, lalu kirim kode. Nomor virtual, VoIP, dan telepon rumah tidak bisa dipakai.",
+              "Di kolom berikutnya, isi 6 digit dari SMS, lalu ketuk Verify code.",
+              "Jika lebih dari 5 menit belum masuk, ketuk Try again dan pakai kode yang terbaru.",
+              "Setelah berhasil, nomor ini tidak bisa diganti. Satu nomor paling banyak memverifikasi 3 akun Claude."
+            ]
+          },
+          {
+            title: "Buka pengaturan",
+            items: [
+              "Setelah masuk, ketuk avatar atau email, lalu pilih Settings.",
+              "Di komputer, avatar ada di kiri bawah. Di ponsel, buka menu dulu, lalu ketuk Settings."
+            ]
+          },
+          {
+            title: "Buka tagihan dan naikkan paket",
+            items: ["Di pengaturan, ketuk Billing.", "Ketuk Upgrade plan."]
+          },
+          {
+            title: "Pilih Ultra",
+            items: [
+              "Cari Ultra di daftar paket.",
+              "Harganya $200 / month, yaitu 200 dolar AS per bulan.",
+              "Pilih Ultra. Max di sebelahnya 100 dolar per bulan, jangan salah pilih."
+            ]
+          },
+          {
+            title: "Isi informasi tagihan",
+            items: [
+              "Isi dari atas ke bawah. Kolom opsional dikosongkan.",
+              "Nama lengkap diisi sesuai nama di kartu. Negara atau wilayah dipilih sesuai negara penagihan.",
+              "Baris alamat 1 diisi nama jalan dan nomor. Baris alamat 2 dikosongkan jika tidak ada.",
+              "Lanjut kota, provinsi, dan kode pos. Pilihan provinsi mengikuti negara.",
+              "Nama perusahaan, jenis nomor pajak, nomor pajak, dan nama lain di faktur dikosongkan untuk langganan pribadi."
+            ]
+          },
+          {
+            title: "Isi metode pembayaran",
+            items: [
+              "Nomor kartu diisi angka di muka kartu.",
+              "Masa berlaku diisi bulan/tahun. Kode keamanan ada di belakang kartu. American Express memakai 4 digit di depan.",
+              "Centang «Simpan detail pembayaran untuk pembelian berikutnya»."
+            ]
+          },
+          {
+            title: "Verifikasi identitas",
+            items: [
+              "Jika tidak muncul, langsung lanjut.",
+              "Jika muncul, ikuti dari atas ke bawah: negara dokumen, jenis dokumen, foto dokumen, lalu swafoto.",
+              "Pakai paspor, SIM, atau KTP asli milik sendiri. Fotokopi, tangkapan layar, dan identitas digital tidak diterima."
+            ]
+          },
+          {
+            title: "Setelah bayar, langganan berhasil",
+            items: [
+              "Ketuk Subscribe untuk menyelesaikan pembayaran.",
+              "Setelah berhasil, paket menampilkan Ultra, 200 dolar AS per bulan.",
+              "Selesai sampai di sini."
+            ]
+          }
+        ]
+      }
+    };
+
+    const copy = document.getElementById("copy");
+    const stage = document.getElementById("stage");
+    const rail = document.getElementById("rail");
+    const count = document.getElementById("count");
+    let index = 0;
+    let lang = "zh";
+
+    function current() {
+      return text[lang];
+    }
+
+    function fill(node) {
+      const ui = current().ui;
+      node.querySelectorAll("[data-k]").forEach((el) => {
+        el.textContent = ui[el.getAttribute("data-k")] || "";
+      });
+    }
+
+    function paintChrome() {
+      const pack = current();
+      document.documentElement.lang = pack.htmlLang;
+      document.title = pack.title;
+      document.getElementById("kicker").textContent = pack.kicker;
+      document.getElementById("hero").textContent = pack.hero;
+      document.getElementById("lede").textContent = pack.lede;
+      document.getElementById("use-title").textContent = pack.useTitle;
+      document.getElementById("use-body").textContent = pack.useBody;
+      document.getElementById("use1-title").textContent = pack.use1Title;
+      document.getElementById("use1-body").textContent = pack.use1Body;
+      document.getElementById("use2-title").textContent = pack.use2Title;
+      document.getElementById("use2-body").textContent = pack.use2Body;
+      document.getElementById("use3-title").textContent = pack.use3Title;
+      document.getElementById("use3-body").textContent = pack.use3Body;
+      document.getElementById("mock-bar").textContent = pack.mockBar;
+      document.getElementById("prev").textContent = pack.prev;
+      document.getElementById("next").textContent = pack.next;
+      document.getElementById("lang-zh").classList.toggle("on", lang === "zh");
+      document.getElementById("lang-id").classList.toggle("on", lang === "id");
+      rail.replaceChildren();
+      pack.steps.forEach((step, i) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = (i + 1) + ". " + step.title;
+        button.addEventListener("click", () => show(i));
+        rail.appendChild(button);
+      });
+    }
+
+    function show(i, scroll) {
+      const previous = index;
+      const pack = current();
+      index = Math.max(0, Math.min(pack.steps.length - 1, i));
+      const step = pack.steps[index];
+      count.textContent = pack.count(index + 1, pack.steps.length);
+      copy.innerHTML = "<h2>" + step.title + "</h2><ol>" + step.items.map((item) => "<li>" + item + "</li>").join("") + "</ol>";
+      const view = document.getElementById(screens[index]).content.cloneNode(true);
+      fill(view);
+      stage.replaceChildren(view);
+      [...rail.children].forEach((button, n) => button.classList.toggle("on", n === index));
+      const currentButton = rail.children[index];
+      if (currentButton) {
+        const left = currentButton.offsetLeft - (rail.clientWidth - currentButton.clientWidth) / 2;
+        rail.scrollTo({ left: Math.max(0, left) });
+      }
+      if (scroll !== false && previous !== index) count.scrollIntoView({ block: "start" });
+    }
+
+    function readLang() {
+      const path = location.pathname.replace(/\/+$/, "");
+      const query = new URLSearchParams(location.search).get("lang");
+      if (path.endsWith("/id") || query === "id") return "id";
+      if (query === "zh") return "zh";
+      try {
+        const saved = localStorage.getItem("claude-ultra-lang");
+        if (saved === "id" || saved === "zh") return saved;
+      } catch (error) {}
+      return "zh";
+    }
+
+    function remember(next) {
+      try { localStorage.setItem("claude-ultra-lang", next); } catch (error) {}
+      if (location.protocol === "file:") return;
+      const path = next === "id" ? "/id" : "/";
+      if (location.pathname !== path || location.search) {
+        history.replaceState({ lang: next }, "", path);
+      }
+    }
+
+    function setLang(next, scroll) {
+      lang = next === "id" ? "id" : "zh";
+      remember(lang);
+      paintChrome();
+      show(index, scroll);
+    }
+
+    document.getElementById("lang-zh").addEventListener("click", () => setLang("zh", false));
+    document.getElementById("lang-id").addEventListener("click", () => setLang("id", false));
+    document.getElementById("prev").addEventListener("click", () => show(index - 1));
+    document.getElementById("next").addEventListener("click", () => show(index + 1));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") show(index + 1);
+      if (event.key === "ArrowLeft") show(index - 1);
+    });
+    window.addEventListener("popstate", () => setLang(readLang(), false));
+
+    setLang(readLang(), false);
+  </script>
+</body>
+</html>
