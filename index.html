@@ -3,7 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>订阅 Claude Ultra：从登录开始</title>
+  <title>订阅 Claude Ultra：每月 200 美元，从登录到付款</title>
+  <meta name="description" content="从打开 claude.ai 登录开始，一步步开通每月 200 美元的 Claude Ultra。中文、印尼语、泰语。Berlangganan Claude Ultra dari masuk sampai bayar. สมัคร Claude Ultra ตั้งแต่เข้าสู่ระบบจนชำระเงิน">
+  <meta name="theme-color" content="#f4efe6">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Claude Ultra">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="id_ID">
+  <meta property="og:locale:alternate" content="th_TH">
+  <meta property="og:title" content="订阅 Claude Ultra：每月 200 美元，从登录到付款">
+  <meta property="og:description" content="从打开 claude.ai 登录开始，一步步开通 Claude Ultra。含中文、印尼语和泰语。Berlangganan dari masuk sampai bayar. สมัครตั้งแต่เข้าสู่ระบบจนชำระเงิน">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="订阅 Claude Ultra：每月 200 美元，从登录到付款">
+  <meta name="twitter:description" content="从打开 claude.ai 登录开始，一步步开通 Claude Ultra。含中文、印尼语和泰语。">
   <style>
     :root {
       --paper: #f4efe6;
@@ -13,7 +25,7 @@
       --line: #e0d3c3;
       --clay: #c24d28;
       --shadow: 0 16px 40px rgba(70, 42, 18, 0.08);
-      --sans: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --sans: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", "Thonburi", "Sukhumvit Set", "Noto Sans Thai", sans-serif;
       --serif: "Iowan Old Style", Palatino, "Palatino Linotype", "Songti SC", "Noto Serif SC", serif;
     }
     * { box-sizing: border-box; }
@@ -122,6 +134,7 @@
       <div class="langs" role="group" aria-label="Language">
         <button type="button" id="lang-zh">中文</button>
         <button type="button" id="lang-id">Indonesia</button>
+        <button type="button" id="lang-th">ไทย</button>
       </div>
       <p class="kicker" id="kicker">CLAUDE ULTRA · $200 / 月</p>
       <h1 id="hero">从登录官网开始订</h1>
@@ -168,6 +181,7 @@
     <div class="fake">Continue with email</div>
   </template>
   <template id="tpl-login">
+    <a class="go" href="https://accounts.google.com/signup" target="_blank" rel="noopener" data-k="login-gmail">没有邮箱，先注册 Gmail</a>
     <p class="mini" data-k="login-label">邮箱登录</p>
     <div class="fake field" data-k="login-email">输入邮箱</div>
     <div class="fake dark">Continue with email</div>
@@ -250,6 +264,7 @@
 
   <script>
     const link = "<a href=\"https://claude.ai\" target=\"_blank\" rel=\"noopener\">claude.ai</a>";
+    const gmail = "<a href=\"https://accounts.google.com/signup\" target=\"_blank\" rel=\"noopener\">Gmail</a>";
     const screens = ["tpl-open", "tpl-login", "tpl-phone", "tpl-settings", "tpl-billing", "tpl-plan", "tpl-bill", "tpl-cardpay", "tpl-kyc", "tpl-done"];
     const text = {
       zh: {
@@ -267,7 +282,7 @@
         use3Title: "为什么选 Ultra",
         use3Body: "个人方案里用量最高的一档，每月 200 美元，约 Rp3.650.000，税另计。适合一整天都在用。",
         payTitle: "用什么卡付款",
-        payBody: "<p>网页上的 Ultra 只收信用卡或借记卡，按美元扣款。</p><ul><li><b>BCA</b>已开通境外网购的 Visa 或 Mastercard 信用卡，或 Mastercard 借记卡。借记卡先在 BCA mobile 或 myBCA 打开 Transaksi Debit Online，并登记收验证码的手机号。</li><li><b>其他银行</b>同样开通了境外网购的卡也可以：Mandiri 的 Visa 借记卡、CIMB Niaga 的 Mastercard 借记卡、Jenius 的 Visa 借记卡（m-Card、e-Card），以及 Mandiri、BNI、BRI、CIMB 带 Visa 或 Mastercard 标志的信用卡。</li><li><b>不能用</b>只有 GPN 标志的国内借记卡。GoPay、OVO、DANA、QRIS、银行转账和 PayPal 也不行。</li></ul>",
+        payBody: "<p>网页上的 Ultra 只收信用卡或借记卡，按美元扣款。</p><ul><li><b>不要用</b>Apple Pay 和 Google Pay，也不要在 iPhone 或安卓的 Claude App 里付款。应用商店会在网页价格外再加一笔费用。请在 claude.ai 网页上直接填卡。</li><li><b>BCA</b>已开通境外网购的 Visa 或 Mastercard 信用卡，或 Mastercard 借记卡。借记卡先在 BCA mobile 或 myBCA 打开 Transaksi Debit Online，并登记收验证码的手机号。</li><li><b>其他银行</b>同样开通了境外网购的卡也可以：Mandiri 的 Visa 借记卡、CIMB Niaga 的 Mastercard 借记卡、Jenius 的 Visa 借记卡（m-Card、e-Card），以及 Mandiri、BNI、BRI、CIMB 带 Visa 或 Mastercard 标志的信用卡。</li><li><b>不能用</b>只有 GPN 标志的国内借记卡。GoPay、OVO、DANA、QRIS、银行转账和 PayPal 也不行。</li></ul>",
         mockBar: "手机上会看到",
         prev: "上一步",
         next: "下一步",
@@ -275,6 +290,7 @@
         ui: {
           "open-btn": "打开 claude.ai",
           "open-heading": "登录 Claude",
+          "login-gmail": "没有邮箱，先注册 Gmail",
           "login-label": "邮箱登录",
           "login-email": "输入邮箱",
           "login-note": "去邮箱打开登录链接，回到这个账号。",
@@ -338,8 +354,9 @@
             title: "登录账号",
             items: [
               "有 Google 账号就点 Continue with Google。",
-              "用邮箱就点 Continue with email，去收件箱打开登录链接。",
-              "还没有账号的话，用同一页注册后再继续。"
+              "还没有邮箱就先注册 " + gmail + "。用自己的姓名选一个 @gmail.com 地址，密码只自己保管。注册完回到这里，点 Continue with Google。",
+              "已经有别的邮箱，就点 Continue with email，去收件箱打开登录链接。",
+              "还没有 Claude 账号的话，用同一页注册后再继续。"
             ]
           },
           {
@@ -386,6 +403,7 @@
           {
             title: "填写付款方式",
             items: [
+              "不要点 Apple Pay 或 Google Pay，也不要在手机 App 里订阅。那里会多一笔费用。只在 claude.ai 网页上直接填银行卡。",
               "用已开通境外网购的卡。BCA 用 Visa 或 Mastercard 信用卡，或已打开 Debit Online 的 Mastercard 借记卡。",
               "也可以用 Mandiri 的 Visa 借记卡、CIMB Niaga 的 Mastercard 借记卡、Jenius 的 Visa 借记卡，以及 Mandiri、BNI、BRI、CIMB 带 Visa 或 Mastercard 标志的信用卡。",
               "只有 GPN 标志的国内借记卡不能用。GoPay、OVO、DANA、QRIS、银行转账和 PayPal 也不能用。",
@@ -428,7 +446,7 @@
         use3Title: "Mengapa Ultra",
         use3Body: "Paket pribadi dengan kuota tertinggi, 200 dolar AS per bulan, sekitar Rp3.650.000, pajak dihitung terpisah. Cocok untuk pemakaian sepanjang hari.",
         payTitle: "Kartu yang bisa dipakai",
-        payBody: "<p>Langganan di situs hanya menerima kartu kredit atau debit, dan ditagih dalam dolar AS.</p><ul><li><b>BCA</b>Kartu kredit Visa atau Mastercard, atau kartu debit Mastercard, yang sudah aktif untuk belanja online luar negeri. Untuk debit, aktifkan dulu Transaksi Debit Online di BCA mobile atau myBCA, lalu daftarkan nomor HP untuk OTP.</li><li><b>Bank lain</b>Kartu yang sama juga bisa: debit Visa Mandiri, debit Mastercard CIMB Niaga, debit Visa Jenius (m-Card atau e-Card), serta kartu kredit Visa atau Mastercard dari Mandiri, BNI, BRI, dan CIMB, asal belanja online luar negeri sudah aktif.</li><li><b>Tidak bisa</b>Kartu debit yang hanya berlogo GPN. GoPay, OVO, DANA, QRIS, transfer bank, dan PayPal juga tidak bisa.</li></ul>",
+        payBody: "<p>Langganan di situs hanya menerima kartu kredit atau debit, dan ditagih dalam dolar AS.</p><ul><li><b>Jangan dipakai</b>Apple Pay dan Google Pay, juga jangan bayar di aplikasi Claude pada iPhone atau Android. Toko aplikasi menambahkan biaya di atas harga situs. Ketik kartu langsung di claude.ai.</li><li><b>BCA</b>Kartu kredit Visa atau Mastercard, atau kartu debit Mastercard, yang sudah aktif untuk belanja online luar negeri. Untuk debit, aktifkan dulu Transaksi Debit Online di BCA mobile atau myBCA, lalu daftarkan nomor HP untuk OTP.</li><li><b>Bank lain</b>Kartu yang sama juga bisa: debit Visa Mandiri, debit Mastercard CIMB Niaga, debit Visa Jenius (m-Card atau e-Card), serta kartu kredit Visa atau Mastercard dari Mandiri, BNI, BRI, dan CIMB, asal belanja online luar negeri sudah aktif.</li><li><b>Tidak bisa</b>Kartu debit yang hanya berlogo GPN. GoPay, OVO, DANA, QRIS, transfer bank, dan PayPal juga tidak bisa.</li></ul>",
         mockBar: "Tampilan di ponsel",
         prev: "Sebelumnya",
         next: "Berikutnya",
@@ -436,6 +454,7 @@
         ui: {
           "open-btn": "Buka claude.ai",
           "open-heading": "Masuk ke Claude",
+          "login-gmail": "Belum punya email, daftar Gmail",
           "login-label": "Masuk dengan email",
           "login-email": "Masukkan email",
           "login-note": "Buka tautan masuk di email, lalu kembali ke akun ini.",
@@ -499,8 +518,9 @@
             title: "Masuk ke akun",
             items: [
               "Punya akun Google, ketuk Continue with Google.",
-              "Pakai email, ketuk Continue with email, lalu buka tautan masuk di kotak masuk.",
-              "Belum punya akun, daftar di halaman yang sama, lalu lanjutkan."
+              "Belum punya email, daftar " + gmail + " dulu. Isi nama sendiri, pilih alamat @gmail.com, dan simpan sandinya sendiri. Setelah selesai, kembali ke sini lalu ketuk Continue with Google.",
+              "Sudah punya email lain, ketuk Continue with email, lalu buka tautan masuk di kotak masuk.",
+              "Belum punya akun Claude, daftar di halaman yang sama, lalu lanjutkan."
             ]
           },
           {
@@ -547,6 +567,7 @@
           {
             title: "Isi metode pembayaran",
             items: [
+              "Jangan ketuk Apple Pay atau Google Pay, dan jangan berlangganan lewat aplikasi ponsel. Di sana ada biaya tambahan. Isi kartu langsung di situs claude.ai.",
               "Pakai kartu yang sudah aktif untuk belanja online luar negeri. Di BCA: kartu kredit Visa atau Mastercard, atau kartu debit Mastercard yang Debit Online-nya sudah aktif.",
               "Bisa juga debit Visa Mandiri, debit Mastercard CIMB Niaga, debit Visa Jenius, atau kartu kredit Visa / Mastercard dari Mandiri, BNI, BRI, dan CIMB.",
               "Kartu debit yang hanya berlogo GPN tidak bisa. GoPay, OVO, DANA, QRIS, transfer bank, dan PayPal juga tidak bisa.",
@@ -570,6 +591,170 @@
               "Setelah berhasil, paket menampilkan Ultra.",
               "Simpan email dan cara masuk akun Claude yang baru didaftarkan, lalu kirimkan ke orang yang akan memakainya. Orang itu nanti masuk ke claude.ai dengan akun ini.",
               "Selesai sampai di sini."
+            ]
+          }
+        ]
+      },
+      th: {
+        title: "สมัคร Claude Ultra: เริ่มจากเข้าสู่ระบบ",
+        htmlLang: "th",
+        kicker: "CLAUDE ULTRA · ประมาณ ฿6,791 / เดือน",
+        hero: "เริ่มจากเว็บไซต์ทางการ",
+        lede: "Claude คือผู้ช่วย AI ของ Anthropic ดูว่าใช้ทำอะไรได้ก่อน แล้วเปิด claude.ai แล้วสมัครตามลำดับ",
+        useTitle: "ใช้ทำอะไร",
+        useBody: "ใน claude.ai ส่งงานด้วยข้อความ: เขียน แปล จัดระเบียบข้อมูล อ่านไฟล์ แก้โค้ด และวิเคราะห์ หลังเปิด Ultra แล้ว ยังเข้าใช้ที่เว็บเดิม",
+        use1Title: "งานประจำวัน",
+        use1Body: "เขียน แปล สรุปข้อความยาว แล้วจัดเป็นตารางหรือรายงาน",
+        use2Title: "เขียนโค้ด",
+        use2Body: "ถามในเว็บ หรือใช้ Claude Code แก้โปรเจกต์บนคอมพิวเตอร์ของตัวเอง",
+        use3Title: "ทำไมต้อง Ultra",
+        use3Body: "แพ็กเกจส่วนตัวที่โควตาสูงสุด เดือนละประมาณ ฿6,791 ราคาบนเว็บคือ 200 ดอลลาร์ ภาษีคิดแยก เหมาะกับคนใช้ทั้งวัน",
+        payTitle: "ใช้บัตรอะไรจ่าย",
+        payBody: "<p>บนเว็บรับเฉพาะบัตรเครดิตหรือเดบิต หน้าเว็บแสดงเป็นดอลลาร์ แต่ธนาคารไทยหักเป็นบาท</p><ul><li><b>อย่าใช้</b>Apple Pay และ Google Pay และอย่าจ่ายในแอป Claude บน iPhone หรือ Android ร้านแอปจะบวกค่าใช้จ่ายเพิ่มจากราคาบนเว็บ ให้กรอกบัตรโดยตรงที่ claude.ai</li><li><b>กสิกรไทย</b>บัตรเครดิต Visa หรือ Mastercard ที่เปิดใช้จ่ายต่างประเทศแล้ว หรือบัตรเดบิตออนไลน์ใน K PLUS ซึ่งเป็นบัตร Visa สำหรับช้อปออนไลน์</li><li><b>กรุงศรีและธนาคารใหญ่</b>บัตรเดบิต Visa ของกรุงศรีต้องลงทะเบียนช้อปออนไลน์ในแอปครั้งแรกก่อนใช้ บัตรเครดิต Visa หรือ Mastercard ของกรุงศรี ไทยพาณิชย์ กรุงเทพ และ KTC ที่เปิดใช้จ่ายต่างประเทศแล้วก็ใช้ได้</li><li><b>ใช้ไม่ได้</b>บัตรเดบิตที่มีแต่โลโก้ในประเทศ ไม่มี Visa หรือ Mastercard รวมถึง PromptPay, TrueMoney, การโอนผ่านธนาคาร และ PayPal</li></ul>",
+        mockBar: "สิ่งที่เห็นบนมือถือ",
+        prev: "ก่อนหน้า",
+        next: "ถัดไป",
+        count: (n, total) => "ขั้นที่ " + n + " จาก " + total,
+        ui: {
+          "open-btn": "เปิด claude.ai",
+          "open-heading": "เข้าสู่ระบบ Claude",
+          "login-gmail": "ยังไม่มีอีเมล สมัคร Gmail",
+          "login-label": "เข้าด้วยอีเมล",
+          "login-email": "กรอกอีเมล",
+          "login-note": "เปิดลิงก์เข้าสู่ระบบในอีเมล แล้วกลับมาที่บัญชีนี้",
+          "phone-label": "ยืนยันเบอร์มือถือ",
+          "phone-code": "รหัสประเทศ",
+          "phone-number": "เบอร์ที่รับ SMS ได้",
+          "phone-send": "ส่งรหัส",
+          "phone-digits": "ตัวเลข 6 หลักจาก SMS",
+          "settings-avatar": "รูปโปรไฟล์ · Settings",
+          "settings-note": "หลังจากกดมุมซ้ายล่าง",
+          "settings-pick": "เลือกอันนี้",
+          "plan-label": "เลือกแพ็กเกจ",
+          "plan-pick": "$200 / month · เลือกอันนี้",
+          "bill-label": "ข้อมูลเรียกเก็บเงิน",
+          "bill-1": "1. ชื่อเต็ม",
+          "bill-1h": "ชื่อบนบัตร",
+          "bill-2": "2. ประเทศหรือภูมิภาค",
+          "bill-2h": "ประเทศที่เรียกเก็บเงิน",
+          "bill-3": "3. ที่อยู่บรรทัดที่ 1",
+          "bill-3h": "ถนนและเลขที่",
+          "bill-4": "4. ที่อยู่บรรทัดที่ 2",
+          "bill-5": "5. เมือง",
+          "bill-5h": "เมือง",
+          "bill-6": "6. จังหวัด",
+          "bill-6h": "ตามประเทศที่เลือก",
+          "bill-7": "7. รหัสไปรษณีย์",
+          "bill-7h": "รหัสไปรษณีย์",
+          "bill-8": "8. ชื่อบริษัท",
+          "bill-9": "9. ประเภทเลขภาษี",
+          "bill-10": "10. เลขภาษี",
+          "bill-11": "11. ชื่ออื่นบนใบแจ้งหนี้",
+          "bill-opt": "ไม่บังคับ",
+          "bill-opt2": "ไม่บังคับ",
+          "bill-opt3": "ไม่บังคับ",
+          "bill-opt4": "ไม่บังคับ",
+          "bill-opt5": "ไม่บังคับ",
+          "pay-label": "วิธีชำระเงิน",
+          "pay-card": "หมายเลขบัตร",
+          "pay-cardh": "ตัวเลขบนหน้าบัตร",
+          "pay-exp": "วันหมดอายุ",
+          "pay-exph": "เดือน / ปี",
+          "pay-cvc": "รหัสความปลอดภัย",
+          "pay-save": "บันทึกรายละเอียดการชำระเงินไว้ใช้ครั้งถัดไป",
+          "kyc-label": "ยืนยันตัวตน · จากบนลงล่าง",
+          "kyc-1": "ประเทศที่ออกเอกสาร",
+          "kyc-2": "พาสปอร์ต ใบขับขี่ หรือบัตรประชาชน",
+          "kyc-3": "ถ่ายเอกสารตัวจริง",
+          "kyc-4": "ถ่ายเซลฟี่ตอนนั้น",
+          "done-label": "สมัครสำเร็จ",
+          "done-note": "Billing แสดง Ultra เก็บอีเมลและวิธีเข้าสู่ระบบไว้กับตัว"
+        },
+        steps: [
+          {
+            title: "เปิดเว็บ Claude แล้วสมัคร $200 / เดือน",
+            items: [
+              "กด " + link + " เพื่อเปิดเว็บ หรือพิมพ์ในแถบที่อยู่แล้วกด enter",
+              "ตรวจว่าหน้าที่เปิดคือหน้าเข้าสู่ระบบของ Claude"
+            ]
+          },
+          {
+            title: "เข้าสู่ระบบ",
+            items: [
+              "มีบัญชี Google อยู่แล้ว กด Continue with Google",
+              "ถ้ายังไม่มีอีเมล ให้สมัคร " + gmail + " ก่อน กรอกชื่อของตัวเอง เลือกที่อยู่ @gmail.com แล้วเก็บรหัสผ่านไว้เอง พอเสร็จกลับมาที่นี่ แล้วกด Continue with Google",
+              "มีอีเมลอื่นอยู่แล้ว กด Continue with email แล้วเปิดลิงก์เข้าสู่ระบบในกล่องจดหมาย",
+              "ยังไม่มีบัญชี Claude ให้สมัครในหน้าเดียวกัน แล้วทำต่อ"
+            ]
+          },
+          {
+            title: "ยืนยันเบอร์มือถือเฉพาะบัญชีใหม่",
+            items: [
+              "หน้านี้ขึ้นหลังสร้างบัญชีใหม่ บัญชีที่ยืนยันแล้วให้ข้ามไปขั้นถัดไป",
+              "ทำตามลำดับบนหน้า: เลือกรหัสประเทศ แล้วกรอกเบอร์มือถือ",
+              "ใช้เบอร์ที่รับ SMS ได้ในพื้นที่ที่รองรับ แล้วกดส่งรหัส เบอร์เสมือน VoIP และโทรศัพท์บ้านใช้ไม่ได้",
+              "ช่องถัดไปกรอกตัวเลข 6 หลักจาก SMS แล้วกด Verify code",
+              "ถ้าเกิน 5 นาทียังไม่มา กด Try again แล้วใช้รหัสล่าสุด",
+              "หลังยืนยันสำเร็จ เปลี่ยนเบอร์นี้ไม่ได้ หนึ่งเบอร์ยืนยันบัญชี Claude ได้ไม่เกิน 3 บัญชี"
+            ]
+          },
+          {
+            title: "เปิดการตั้งค่า",
+            items: [
+              "หลังเข้าสู่ระบบ กดรูปโปรไฟล์หรืออีเมล แล้วเลือก Settings",
+              "บนคอมพิวเตอร์ รูปโปรไฟล์อยู่ซ้ายล่าง บนมือถือเปิดเมนูก่อน แล้วกด Settings"
+            ]
+          },
+          {
+            title: "เปิดบิลแล้วอัปเกรด",
+            items: ["ในการตั้งค่า กด Billing", "กด Upgrade plan"]
+          },
+          {
+            title: "เลือก Ultra",
+            items: [
+              "หา Ultra ในรายการแพ็กเกจ",
+              "ราคาบนหน้าเว็บคือ $200 / month ตามอัตราอ้างอิงธนาคารแห่งประเทศไทยวันที่ 20 พฤศจิกายน 2026 ที่ 1 ดอลลาร์ประมาณ ฿33.95 ดังนั้นเตรียมไว้ประมาณ ฿6,791",
+              "ถ้าหน้าชำระเงินบวก VAT 7% จะเป็นประมาณ ฿7,266 ยอดที่หักจริงคือยอดรวมบนหน้าชำระเงิน",
+              "เลือก Ultra ส่วน Max ที่อยู่ข้างกันราคาบนเว็บคือ $100 / month ประมาณ ฿3,395 อย่ากดผิด"
+            ]
+          },
+          {
+            title: "กรอกข้อมูลเรียกเก็บเงิน",
+            items: [
+              "กรอกจากบนลงล่าง ช่องที่ไม่บังคับให้เว้นว่าง",
+              "ชื่อเต็มให้ตรงกับชื่อบนบัตร ประเทศหรือภูมิภาคเลือกตามประเทศที่เรียกเก็บเงิน",
+              "ที่อยู่บรรทัดที่ 1 กรอกถนนและเลขที่ บรรทัดที่ 2 ไม่มีก็เว้นว่าง",
+              "ต่อด้วยเมือง จังหวัด และรหัสไปรษณีย์ ตัวเลือกจังหวัดเปลี่ยนตามประเทศ",
+              "ชื่อบริษัท ประเภทเลขภาษี เลขภาษี และชื่ออื่นบนใบแจ้งหนี้ สำหรับการสมัครส่วนตัวให้เว้นว่าง"
+            ]
+          },
+          {
+            title: "กรอกวิธีชำระเงิน",
+            items: [
+              "อย่ากด Apple Pay หรือ Google Pay และอย่าสมัครในแอปมือถือ ที่นั่นมีค่าใช้จ่ายเพิ่ม ให้กรอกบัตรโดยตรงบนเว็บ claude.ai",
+              "ใช้บัตรไทยที่เปิดช้อปออนไลน์ต่างประเทศแล้ว: บัตรเครดิต Visa หรือ Mastercard ของกสิกรไทย หรือบัตรเดบิตออนไลน์กสิกรไทยใน K PLUS",
+              "บัตรเดบิต Visa ของกรุงศรีต้องลงทะเบียนช้อปออนไลน์ก่อนใช้ บัตรเครดิต Visa หรือ Mastercard ของกรุงศรี ไทยพาณิชย์ กรุงเทพ และ KTC ที่เปิดใช้จ่ายต่างประเทศแล้วก็ใช้ได้",
+              "บัตรเดบิตที่ไม่มีโลโก้ Visa หรือ Mastercard ใช้ไม่ได้ PromptPay, TrueMoney, การโอนผ่านธนาคาร และ PayPal ก็ใช้ไม่ได้",
+              "ก่อนจ่าย เตรียมยอดเงินหรือวงเงินไว้ประมาณ ฿7,800 เผื่อ VAT 7% ส่วนต่างอัตราแลกเปลี่ยน และค่าแปลงสกุลเงินของธนาคารซึ่งมักไม่เกินประมาณ 2.5% ประเทศเลือกไทย ที่อยู่ให้ตรงกับที่ธนาคารมีไว้",
+              "หมายเลขบัตรกรอกตัวเลขบนหน้าบัตร วันหมดอายุกรอกเดือน/ปี รหัสความปลอดภัยอยู่ด้านหลังบัตร American Express ใช้ 4 หลักด้านหน้า",
+              "ถ้าธนาคารขอ OTP หรือให้ยืนยันในแอป ทำให้เสร็จก่อนส่ง แล้วติ๊ก «บันทึกรายละเอียดการชำระเงินไว้ใช้ครั้งถัดไป»"
+            ]
+          },
+          {
+            title: "ยืนยันตัวตน",
+            items: [
+              "ถ้าไม่เด้งขึ้นมา ให้ไปขั้นถัดไปเลย",
+              "ถ้าขึ้นมา ให้ทำจากบนลงล่าง: ประเทศของเอกสาร ประเภทเอกสาร ถ่ายเอกสาร แล้วเซลฟี่",
+              "ใช้พาสปอร์ต ใบขับขี่ หรือบัตรประชาชนตัวจริงของตัวเอง สำเนา ภาพหน้าจอ และบัตรดิจิทัลใช้ไม่ได้"
+            ]
+          },
+          {
+            title: "หลังจ่ายเงิน สมัครสำเร็จ",
+            items: [
+              "กดสมัครเพื่อจ่ายให้เสร็จ",
+              "หลังสำเร็จ แพ็กเกจจะแสดง Ultra",
+              "เก็บอีเมลและวิธีเข้าสู่ระบบของบัญชี Claude ไว้กับตัว คนที่จะใช้บัญชีนี้เข้า claude.ai ด้วยบัญชีนี้",
+              "จบที่นี่"
             ]
           }
         ]
@@ -616,6 +801,7 @@
       document.getElementById("next").textContent = pack.next;
       document.getElementById("lang-zh").classList.toggle("on", lang === "zh");
       document.getElementById("lang-id").classList.toggle("on", lang === "id");
+      document.getElementById("lang-th").classList.toggle("on", lang === "th");
       rail.replaceChildren();
       pack.steps.forEach((step, i) => {
         const button = document.createElement("button");
@@ -645,29 +831,39 @@
       if (scroll !== false && previous !== index) count.scrollIntoView({ block: "start" });
     }
 
+    function browserLang() {
+      const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+      for (const tag of list) {
+        const base = String(tag).toLowerCase().split("-")[0];
+        if (base === "th" || base === "id" || base === "zh") return base;
+      }
+      return "zh";
+    }
+
     function readLang() {
       const path = location.pathname.replace(/\/+$/, "");
       const query = new URLSearchParams(location.search).get("lang");
+      if (path.endsWith("/th") || query === "th") return "th";
       if (path.endsWith("/id") || query === "id") return "id";
-      if (query === "zh") return "zh";
+      if (path.endsWith("/zh") || query === "zh") return "zh";
       try {
         const saved = localStorage.getItem("claude-ultra-lang");
-        if (saved === "id" || saved === "zh") return saved;
+        if (saved === "th" || saved === "id" || saved === "zh") return saved;
       } catch (error) {}
-      return "zh";
+      return browserLang();
     }
 
     function remember(next) {
       try { localStorage.setItem("claude-ultra-lang", next); } catch (error) {}
       if (location.protocol === "file:") return;
-      const path = next === "id" ? "/id" : "/";
+      const path = "/" + next;
       if (location.pathname !== path || location.search) {
         history.replaceState({ lang: next }, "", path);
       }
     }
 
     function setLang(next, scroll) {
-      lang = next === "id" ? "id" : "zh";
+      lang = next === "id" || next === "th" ? next : "zh";
       remember(lang);
       paintChrome();
       show(index, scroll);
@@ -675,6 +871,7 @@
 
     document.getElementById("lang-zh").addEventListener("click", () => setLang("zh", false));
     document.getElementById("lang-id").addEventListener("click", () => setLang("id", false));
+    document.getElementById("lang-th").addEventListener("click", () => setLang("th", false));
     document.getElementById("prev").addEventListener("click", () => show(index - 1));
     document.getElementById("next").addEventListener("click", () => show(index + 1));
     document.addEventListener("keydown", (event) => {
